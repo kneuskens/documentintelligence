@@ -1,0 +1,4 @@
+pydantic-settings
+pydantic
+python-dotenv
+requests
