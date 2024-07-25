@@ -4,6 +4,7 @@ import time
 from typing import Union, Dict
 from config.settings import get_settings
 import base64
+import json
 
 
 class DocumentIntelligenceService:
@@ -24,7 +25,7 @@ class DocumentIntelligenceService:
     def analyze(
         self,
         source: Union[str, bytes],
-        is_url: bool = True,
+        is_url: bool = False,
         model_id: str = "prebuilt-layout",
     ) -> Dict:
         """
@@ -56,9 +57,9 @@ class DocumentIntelligenceService:
             ValueError: If the Operation-Location header is missing in the response.
             requests.HTTPError: If the API request fails.
         """
-        # documentpath=source
-        # with open(documentpath, "rb") as pdf_file:
-        #     source = base64.b64encode(pdf_file.read()).decode()
+        documentpath=source
+        with open(documentpath, "rb") as pdf_file:
+            source = base64.b64encode(pdf_file.read()).decode()
 
         url = f"{self.endpoint}/documentintelligence/documentModels/{model_id}:analyze?api-version={self.api_version}&outputContentFormat=markdown"
         headers = {
@@ -66,9 +67,10 @@ class DocumentIntelligenceService:
             "Ocp-Apim-Subscription-Key": self.key,
         }
         data = {"urlSource": source} if is_url else {"base64Source": source}
+        print(json.dumps(data))
 
         logging.info("Submitting document for analysis")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=json.dumps(data))
         response.raise_for_status()
 
         operation_location = response.headers.get("Operation-Location")
@@ -106,7 +108,7 @@ if __name__ == "__main__":
     # Example usage of the DocumentIntelligenceService
     client = DocumentIntelligenceService()
     analysis_results = client.analyze(
-        source="https://1drv.ms/b/s!AsvTnTBdjEbvhd5MgLTu7mfmvbSQ4g?e=UZKlpZ"
+        source=r"C:\Users\kurt.neuskens\Resillion\Global_BidManagement - Active Bids\Atrias Testing team SAT\CV's\ISTQB certificaat Astkhik Sukiasian.pdf"
     )
     print(analysis_results.keys())
     print(analysis_results["analyzeResult"].keys())
