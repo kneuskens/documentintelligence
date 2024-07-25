@@ -2,3 +2,4 @@ pydantic-settings
 pydantic
 python-dotenv
 requests
+azure-ai-formrecognizer

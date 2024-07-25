@@ -19,7 +19,7 @@ class DocumentIntelligenceService:
         self.key = settings.document_intelligence.api_key
         self.endpoint = settings.document_intelligence.endpoint
         self.api_version = "2024-02-29-preview"  # Currently only available in East US, West US2, and West Europe
-
+        
     def analyze(
         self,
         source: Union[str, bytes],
