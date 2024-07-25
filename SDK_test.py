@@ -4,7 +4,8 @@ import time
 from typing import Union, Dict
 from config.settings import get_settings
 from azure.core.credentials import AzureKeyCredential
-from azure.ai.formrecognizer import DocumentAnalysisClient
+# from azure.ai.formrecognizer import DocumentAnalysisClient
+from azure.ai.documentintelligence import DocumentIntelligenceClient
 
 class DocumentIntelligenceService:
     """
@@ -25,13 +26,13 @@ class DocumentIntelligenceService:
 endpoint=DocumentIntelligenceService().endpoint
 Key=DocumentIntelligenceService().key
 credential=AzureKeyCredential(Key)
-document_analysis_client = DocumentAnalysisClient(endpoint, credential)
+document_analysis_client = DocumentIntelligenceClient(endpoint, credential)
 
 path_to_sample_documents=r"C:\Users\kurt_\OneDrive\Documenten\temp\Senior QA Automation Engineer.pdf"
 
 with open(path_to_sample_documents, "rb") as f:
     poller = document_analysis_client.begin_analyze_document(
-        "prebuilt-document", document=f
+        "prebuilt-document", document=f,output_content_format=ContentFormat.MARKDOWN
     )
 result = poller.result()
 
