@@ -9,8 +9,8 @@ def get_settings():
     return Settings()
 
 class DocumentIntelligenceSettings(BaseSettings):
-    api_key: str =os.getenv("DOCUMENT_INTELLIGENCE_API_KEY")
-    endpoint: str =os.getenv("DOCUMENT_INTELLIGENCE_ENDPOINT")
+    api_key:str =os.getenv("DOCUMENT_INTELLIGENCE_API_KEY")
+    endpoint:str =os.getenv("DOCUMENT_INTELLIGENCE_ENDPOINT")
 
 class Settings(BaseSettings):
     document_intelligence:DocumentIntelligenceSettings=DocumentIntelligenceSettings()
